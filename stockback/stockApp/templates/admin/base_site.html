@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}STOCK ADMIN{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/dashboard.css' %}">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .sidebar { width: 200px; background:#333; color:#fff; height:100vh; position:fixed; top:0; left:0; padding-top:50px; }
+        .sidebar a { display:block; color:white; text-decoration:none; padding:10px; }
+        .sidebar a:hover { background:#444; }
+        .content { margin-left:220px; padding:20px; }
+        .card { display:inline-block; padding:20px; margin:10px; border-radius:10px; background:#eee; width:200px; text-align:center; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2 style="text-align:center;">📦 STOCK ADMIN</h2>
+        <a href="{% url 'stock_admin:stock-dashboard' %}">Dashboard</a>
+        <a href="{% url 'admin:stockApp_produit_changelist' %}">Produits</a>
+        <a href="{% url 'admin:stockApp_stockin_changelist' %}">Entrées</a>
+        <a href="{% url 'admin:stockApp_stockout_changelist' %}">Sorties</a>
+        <a href="{% url 'admin:stockApp_stockhistory_changelist' %}">Historique</a>
+        <hr style="border-color:#555;">
+        <a href="{% url 'admin:logout' %}">Déconnexion</a>
+    </div>
+
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

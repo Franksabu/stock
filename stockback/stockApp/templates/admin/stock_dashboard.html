@@ -1,0 +1,133 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+
+    <!-- Navbar -->
+    <nav class="dashboard-nav">
+        <a href="{% url 'admin:stockApp_stockin_changelist' %}">📥 Entrées</a>
+        <a href="{% url 'admin:stockApp_stockout_changelist' %}">📤 Sorties</a>
+        <a href="{% url 'stock_admin:stock-dashboard' %}">📊 Dashboard</a>
+    </nav>
+
+    <!-- Totaux -->
+    <div class="totals-cards">
+        <div class="card total-entries">
+            <h3>Entrées Totales</h3>
+            <p>{{ total_entrees }}</p>
+        </div>
+        <div class="card total-exits">
+            <h3>Sorties Totales</h3>
+            <p>{{ total_sorties }}</p>
+        </div>
+        <div class="card remaining-stock">
+            <h3>Stock Restant</h3>
+            <p>{{ stock_restant }}</p>
+        </div>
+    </div>
+
+    <!-- Stock par produit -->
+    <h2>📦 Stock Actuel par Produit</h2>
+    <table class="table-stock">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produit in produits %}
+            <tr>
+                <td>{{ produit.nom }}</td>
+                <td>{{ produit.stock }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Derniers mouvements -->
+    <h2>📝 10 derniers mouvements</h2>
+    <table class="table-mouvements">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in mouvements %}
+            <tr>
+                <td>{{ m.get_operation_type_display }}</td>
+                <td>{{ m.produit.nom }}</td>
+                <td>{{ m.quantite }}</td>
+                <td>{{ m.created_at|date:"d/m/Y H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+.dashboard-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.dashboard-nav {
+    margin-bottom: 20px;
+}
+.dashboard-nav a {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 8px 12px;
+    background: #1976d2;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.dashboard-nav a:hover {
+    background: #1565c0;
+}
+
+/* Totaux */
+.totals-cards {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+.card {
+    flex: 1;
+    background: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+.total-entries { background: #d0f0d0; }
+.total-exits { background: #f0d0d0; }
+.remaining-stock { background: #d0d0f0; }
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+th, td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+th {
+    background: #1976d2;
+    color: white;
+}
+tr:nth-child(even) {
+    background: #f9f9f9;
+}
+</style>
+{% endblock %}
